@@ -1,0 +1,42 @@
+﻿<local:BaseFaceView x:Class="AFT_System.CustomControl.ModeView.FaceWhiteQr"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AFT_System.CustomControl.ModeView"
+             xmlns:control="clr-namespace:AFT_System.CustomControl.Control"
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+    <local:BaseView.Background>
+        <ImageBrush ImageSource="Img/人脸识别检票.jpg"/>
+    </local:BaseView.Background>
+    <Grid>
+        <Image Stretch="Fill" Source="Img/人脸识别检票_03.jpg" Margin="53,70,44,210" />
+        <Image Name="LeftImg" Source="./Img/left.png" HorizontalAlignment="Left" VerticalAlignment="Top" Height="266" Margin="0,534,0,0" Width="177" Visibility="Hidden"/>
+        <control:VideoControls2 x:Name="CameraPic2"></control:VideoControls2>
+        <!--<control:VideoControls x:Name="CameraPic1"/>-->
+        <Image Name="CvrImgMain" Stretch="Fill" Width="384" Height="340" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="734,127,0,0"/>
+        <Image Name="CvrImg" Stretch="Fill" Width="393" Height="340" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="218,124,0,0"/>
+        <Image Stretch="Fill" Width="176" Height="246" Source="Img/人脸识别检票_03.png" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1092,542,0,0"/>
+        <!--<Image Name="MiniImg" Stretch="Fill" Width="100" Height="120" Margin="459,407,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>-->
+        <!--<control:BaseLabl x:Name="Tip1" Margin="371,399,0,0" Text=" " FontWeight="Bold" TextWrapping="Wrap" Height="150" Width="34"/>-->
+        <control:BaseLabl x:Name="Tip2" Margin="742,477,0,0" Text="1、请不要带帽子和眼镜；" FontSize="24" Height="33" Width="264"/>
+        <control:BaseLabl x:Name="Tip3" Margin="742,510,0,0" Text="2、请正视摄像头；" FontSize="24" Height="29" Width="281"/>
+        <control:BaseLabl x:Name="Tip4" Margin="742,544,0,0" Text="3、请保持你的姿势稳定" FontSize="24" Height="27" Width="273"/>
+        <control:BaseLabl x:Name="MyArea"  Margin="53,595,0,0" Text="区域:"/>
+        <control:BaseLabl x:Name="MyNum"  Margin="624,596,0,0" Text="票号:"/>
+        <control:BaseLabl x:Name="MyType" Visibility="Hidden"  Margin="52,635,0,0" Text="类型:"/>
+        <control:BaseLabl x:Name="MyName"  Margin="52,635,0,0" Text="购票者:"/>
+        <control:BaseLabl x:Name="MyTime"  Margin="621,635,0,0" Text="检票时间:"/>
+        <TextBlock Text="检票成功" x:Name="Tip1" FontSize="26" Foreground="White" TextAlignment="Center" TextWrapping="Wrap" Width="30" Height="300" Margin="648,203,602,297"/>
+        <Button Margin="254,705,790,29" Click="btnStart_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="Img/人脸识别检票_10.jpg"/>
+            </Button.Background>
+        </Button>
+        <Button Margin="787,705,257,29" Click="btnStop_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="Img/人脸识别检票_12.jpg"/>
+            </Button.Background>
+        </Button>
+    </Grid>
+</local:BaseFaceView>

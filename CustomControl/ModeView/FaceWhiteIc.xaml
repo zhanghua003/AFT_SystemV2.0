@@ -1,0 +1,24 @@
+﻿<local:BaseFaceView x:Class="AFT_System.CustomControl.ModeView.FaceWhiteIc"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AFT_System.CustomControl.ModeView"
+             xmlns:control="clr-namespace:AFT_System.CustomControl.Control"
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+    <local:BaseView.Background><ImageBrush ImageSource="Img/身份证年票模式.jpg"/></local:BaseView.Background>
+    <Grid>
+        <control:BaseLabl x:Name="Title"  Margin="118,93,0,0" Text="场次名称" FontWeight="Bold" TextAlignment="Center" Width="530"/>
+        <Image Name="LeftImg" Source="./Img/left.png" HorizontalAlignment="Left" VerticalAlignment="Top" Height="266" Margin="0,534,0,0" Width="177" Visibility="Hidden"/>
+        <control:VideoControls x:Name="CameraPic1"/>
+        <Image Name="CvrImgMain" Stretch="Fill" Width="100" Height="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="333,186,0,0"/>
+        <Image Name="CvrImg" Stretch="Fill" Width="100" Height="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="208,407,0,0"/>
+        <Image Name="MiniImg" Stretch="Fill" Width="100" Height="120" Margin="459,407,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <control:BaseLabl x:Name="Tip1" Margin="371,399,0,0" Text=" " FontWeight="Bold" TextWrapping="Wrap" Height="150" Width="34"/>
+        <control:BaseLabl x:Name="Tip2"  Margin="146,634,0,0" Text="请将二代身份证放置在识别区域！" Height="128" Width="484"/>
+        <control:BaseLabl x:Name="MyArea"  Margin="714,432,0,0" Text="区域:"/>
+        <control:BaseLabl x:Name="MyNum"  Margin="714,479,0,0" Text="票号:"/>
+        <control:BaseLabl x:Name="MyType"  Margin="714,527,0,0" Text="类型:"/>
+        <control:BaseLabl x:Name="MyTime"  Margin="714,568,0,0" Text="时间:"/>
+    </Grid>
+</local:BaseFaceView>

@@ -1,0 +1,20 @@
+﻿<local:BaseView x:Class="AFT_System.CustomControl.ModeView.OnlyQrView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:AFT_System.CustomControl.ModeView"
+             xmlns:control="clr-namespace:AFT_System.CustomControl.Control"
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300" Width="1280" Height="800">
+    <local:BaseView.Background><ImageBrush ImageSource="Img/散票模式.jpg"/></local:BaseView.Background>
+    <control:BaseLabl x:Name="Title"  Margin="393,90,0,0" Text="场次名称" FontWeight="Bold" TextAlignment="Center" Width="530"/>
+    <Image Name="LeftImg" Source="./Img/left.png" HorizontalAlignment="Left" VerticalAlignment="Top" Height="266" Margin="0,534,0,0" Width="177" Visibility="Hidden"/>
+    <control:BaseLabl x:Name="Tip"  Margin="405,164,0,0" Text="就绪！" Height="212" Width="500"/>
+    <control:BaseLabl x:Name="MyArea"  Margin="423,402,0,0" Text="区域"/>
+    <control:BaseLabl x:Name="MyNum"  Margin="423,446,0,0" Text="票号:"/>
+    <control:BaseLabl x:Name="MyType"  Margin="423,484,0,0" Text="类型"/>
+    <control:BaseLabl x:Name="MyTime"  Margin="423,566,0,0" Text="时间:"/>
+    <control:BaseLabl Margin="422,525,0,0" Text="身份证:"/>
+    <TextBox Name="MyIdNo" Width="311" Height="38" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="26" Margin="521,524,0,0"/>
+    <control:Minikeyboard x:Name="Minikeyboard" Margin="927,343,0,0" Changed="Minikeyboard_OnChanged"/>
+</local:BaseView>

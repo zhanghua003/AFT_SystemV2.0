@@ -1,0 +1,12 @@
+﻿<Grid x:Class="AFT_System.CustomControl.Control.VideoControls"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mode="clr-namespace:AFT_System.CustomControl.Mode"
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top"
+             Margin="692,69,0,0"  Width="448" Height="358" Visibility="Hidden">
+    <WindowsFormsHost Background="Transparent">
+        <mode:VideoShow x:Name="VideoShow1"/>
+    </WindowsFormsHost>
+</Grid>
