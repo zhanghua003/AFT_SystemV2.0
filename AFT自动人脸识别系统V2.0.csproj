@@ -110,6 +110,7 @@
       <HintPath>dll\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -147,6 +148,9 @@
     </Compile>
     <Compile Include="CustomControl\CustomWin\SelectMatch.xaml.cs">
       <DependentUpon>SelectMatch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControl\CustomWin\WinSetting.xaml.cs">
+      <DependentUpon>WinSetting.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControl\ModeView\BaseFaceView.cs" />
     <Compile Include="CustomControl\ModeView\BaseView.cs" />
@@ -191,6 +195,7 @@
     <Compile Include="Face\FaceFun.cs" />
     <Compile Include="Face\FaceverifyDLL.cs" />
     <Compile Include="ICard\IDCardFunc.cs" />
+    <Compile Include="Public\ConfigHelper.cs" />
     <Compile Include="Public\EncryptHelper.cs" />
     <Compile Include="Public\FaceStruck.cs" />
     <Compile Include="Public\IFaceView.cs" />
@@ -218,6 +223,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControl\CustomWin\SelectMatch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControl\CustomWin\WinSetting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

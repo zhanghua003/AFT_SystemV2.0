@@ -11,7 +11,8 @@
     <!-- 模式选择 -->
     <Grid Name="FaceGrid">
         <Grid.Background>
-            <ImageBrush ImageSource="../ModeView/Img/人脸识别系统验票模式选择.jpg"></ImageBrush></Grid.Background>
+            <ImageBrush ImageSource="../ModeView/Img/人脸识别系统验票模式选择.jpg"></ImageBrush>
+        </Grid.Background>
         <Grid Margin="121,74,137,156">
             <Button Tag="1" Content="身份证人脸识别" FontSize="30" Margin="167,70,604,434" Click="ChooseMode"/>
             <Button Tag="2" Content="身份证年卡人脸识别" FontSize="25" Margin="656,71,113,434" Click="ChooseMode"/>
@@ -21,6 +22,8 @@
             <Button Tag="6" Content="年卡白名单" FontSize="30" Margin="656,278,113,220" IsEnabled="False" Click="ChooseMode"/>
             <Button Tag="7" Content="年卡散票兼容" FontSize="30" Margin="656,384,113,118" Click="ChooseMode"/>
             <Button Tag="8" Content="散票白名单验票" FontSize="30" Margin="167,384,604,114" Click="ChooseMode"/>
+            <Rectangle Margin="973,457,-112,-143" MouseLeftButtonUp="Rectangle_MouseLeftButtonUp" Fill="#02F7F6F6"></Rectangle>
+            <!--<Button Tag="99" Margin="973,457,-112,-143" Click="btnSetting" BorderBrush="{x:Null}" Cursor="Hand" Background="#19F9F2F2"></Button>-->
         </Grid>
         <!-- 硬件连接提示 -->
         <Grid Name="TipGrid" Visibility="Hidden" Margin="121,100,195,186">
@@ -29,7 +32,9 @@
         </Grid>
         <!-- 登录界面 -->
         <Grid Name="LoginGrid" Visibility="Hidden">
-            <Grid.Background><ImageBrush ImageSource="../ModeView/Img/人脸识别系统登录界面.jpg"></ImageBrush></Grid.Background>
+            <Grid.Background>
+                <ImageBrush ImageSource="../ModeView/Img/人脸识别系统登录界面.jpg"></ImageBrush>
+            </Grid.Background>
             <TextBox Name="AftUser" HorizontalAlignment="Left" Height="38" FontSize="28" Margin="600,174,0,0" TextWrapping="NoWrap" MaxLength="20" VerticalAlignment="Top" Width="226"/>
             <PasswordBox Name="PwBox" HorizontalAlignment="Left" FontSize="28" Height="39" Margin="600,227,0,0" VerticalAlignment="Top" Width="226"/>
             <Button Name="BtnLogin" Content="登录" FontSize="28" HorizontalAlignment="Left" Height="44" Margin="722,316,0,0" VerticalAlignment="Top" Width="104" Click="LoginBtn_OnClick"/>

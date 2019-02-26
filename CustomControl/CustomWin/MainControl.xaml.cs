@@ -191,5 +191,22 @@ namespace AFT_System.CustomControl.CustomWin
                 TipGrid.Visibility = Visibility.Hidden;
             }
         }
+
+        /// <summary>
+        /// 打开设置界面
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSetting(object sender, RoutedEventArgs e)
+        {
+            WinSetting winsetting = new WinSetting();
+            winsetting.Show();
+        }
+
+        private void Rectangle_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            WinSetting winsetting = new WinSetting();
+            winsetting.Show();
+        }
     }
 }
