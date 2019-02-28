@@ -48,7 +48,14 @@ namespace AFT_System.CustomControl.ModeView
         {
             InitializeComponent();
             _confidence = IrAdvanced.ReadInt("Confidence", 85) / 100.0f;   //可信度
-            faceFactory = new FaceVerifyFactory();
+            try
+            {
+                faceFactory = new FaceVerifyFactory();
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
         public override void Init()

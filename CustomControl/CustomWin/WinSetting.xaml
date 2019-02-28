@@ -4,14 +4,61 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AFT_System.CustomControl.CustomWin"
-        mc:Ignorable="d" WindowStyle="None" WindowStartupLocation="CenterScreen" Topmost="False"
+        mc:Ignorable="d" WindowStyle="None"  WindowStartupLocation="CenterScreen" Topmost="False"
         Title="WinSetting" Height="500" Width="600">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="0.4*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="0.6*"/>
         </Grid.RowDefinitions>
-        <Button x:Name="btn_cancel" Grid.Row="1" Height="30" Width="80" FontSize="15" Content="取消" HorizontalAlignment="Left" Margin="200,0,0,30" Click="btn_cancel_Click"></Button>
-        <Button x:Name="btn_save" Grid.Row="1" Height="30" Width="80" FontSize="15" Content="保存" HorizontalAlignment="Right" Margin="0,0,200,30" Click="btn_save_Click"></Button>
+        <TextBlock Text="X" FontWeight="Bold" FontSize="18" Margin="0,0,5,0" Foreground="Red" MouseUp="TextBlock_MouseUp" Cursor="Hand" HorizontalAlignment="Right" VerticalAlignment="Top"></TextBlock>
+
+        <TextBlock Text="中心平台数据" Margin="20,10,20,0"  FontSize="20" Foreground="#FF1970E4" FontWeight="Bold" VerticalAlignment="Bottom" />
+        <Rectangle Grid.Row="1" Margin="20,5" Height="2">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,0.5" MappingMode="RelativeToBoundingBox" StartPoint="0,0.5">
+                    <GradientStop Color="#FF0C61DC"/>
+                    <GradientStop Color="White" Offset="1"/>
+                    <GradientStop Color="#FF9FC4F5" Offset="0.967"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <TextBlock Grid.Row="2" Text="比赛：" Margin="110,24,0,0" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left" Width="45"/>
+        <ComboBox Grid.Row="2" Margin="160,20,0,0" x:Name="cmb_game" Height="30" Width="280" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Button Grid.Row="2" x:Name="btn_UploadCenter" Margin="150,90,0,0" Width="120" FontSize="15" Height="30" Content="上传检票数据" HorizontalAlignment="Left" Click="Btn_UploadCenter_Click" VerticalAlignment="Top"/>
+        <Button Grid.Row="2" x:Name="btn_Synchronization" Margin="0,90,150,0" Width="120" FontSize="15" Height="30" Content="同步购票数据" HorizontalAlignment="Right" Click="Btn_Synchronization_Click" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="3" Margin="20,10,20,0" Text="公安数据上传设置" FontSize="20" Foreground="#FF1970E4" FontWeight="Bold" VerticalAlignment="Center" />
+        <Rectangle Grid.Row="4" Margin="20,5" Height="2">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,0.5" MappingMode="RelativeToBoundingBox" StartPoint="0,0.5">
+                    <GradientStop Color="#FF0C61DC"/>
+                    <GradientStop Color="White" Offset="1"/>
+                    <GradientStop Color="#FF9FC4F5" Offset="0.967"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <TextBlock Grid.Row="5" Text="比赛名称：" Margin="80,24,0,0" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left" Height="24"/>
+        <TextBox Grid.Row="5"  x:Name="txt_game" Margin="160,20,0,0" Height="30" Width="280" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+
+        <CheckBox x:Name="cb_auto" Grid.Row="5" Content="是否自动上传"  Height="25" Width="120" Margin="80,70,0,0" FontSize="16" Checked="CheckBox_Checked" HorizontalAlignment="Left" VerticalAlignment="Top" Unchecked="CheckBox_Unchecked"/>
+        <StackPanel x:Name="sp_interval" Grid.Row="5" Margin="292,70,0,0" Orientation="Horizontal" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <TextBlock Grid.Row="5" Text="上传间隔"   FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left" Height="23" />
+            <TextBox Grid.Row="5" x:Name="txt_interval" Margin="5,0,0,0" Width="40" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            <TextBlock Grid.Row="5" Text="分钟" Margin="5,0,0,0" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left" />
+        </StackPanel>
+        <StackPanel x:Name="sp_game" Visibility="Hidden" Grid.Row="5" Orientation="Horizontal" Height="30" Margin="110,106,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <TextBlock Grid.Row="5" Text="比赛：" Width="45"  FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,4,0,0" />
+            <ComboBox Grid.Row="5" x:Name="cmb_gagame" Height="30" Width="280" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </StackPanel>
+
+        <Button Grid.Row="5" Visibility="Hidden" x:Name="btn_UploadPolice" Width="120" FontSize="15" Height="30" Content="手动上传"  Click="Btn_UploadPolice_Click" VerticalAlignment="Top" Margin="0,180,0,0"/>
+        <Button Grid.Row="5" x:Name="btn_save"  Width="120" FontSize="15" Height="30" Content="保存设置"  Click="btn_save_Click" VerticalAlignment="Top" Margin="0,180,0,0"/>
+
     </Grid>
 </Window>
