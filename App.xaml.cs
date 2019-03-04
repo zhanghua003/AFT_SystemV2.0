@@ -18,6 +18,9 @@ namespace AFT_System
             //}
             //LoginWindowFactory.ConcreLoginWindow().Show();
 
+            int session_id = Data.CenterDataFactory.KeyTable();
+            Data.CenterDataFactory.BlackName(session_id);
+
             CustomControl.CustomWin.WinSetting win = new CustomControl.CustomWin.WinSetting();
             win.Show();
         }

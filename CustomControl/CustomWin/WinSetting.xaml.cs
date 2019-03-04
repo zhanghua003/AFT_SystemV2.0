@@ -29,14 +29,25 @@ namespace AFT_System.CustomControl.CustomWin
 
         private void WinSetting_Loaded(object sender, RoutedEventArgs e)
         {
-            this.cb_auto.IsChecked = true;
+            bool Is_AutoUpload = Convert.ToBoolean(ConfigHelper.GetConfig("Is_AutoUpload"));
+            string Upload_Interval = ConfigHelper.GetConfig("Upload_Interval");
+            string ServerGameName = ConfigHelper.GetConfig("ServerGameName");
+
+            this.sp_interval.Visibility = Visibility.Hidden;
+            this.sp_game.Visibility = Visibility.Visible;
+            this.btn_UploadPolice.Visibility = Visibility.Visible;
+            this.btn_save.Visibility = Visibility.Hidden;
+
+            this.cb_auto.IsChecked = Is_AutoUpload;
+            this.txt_interval.Text = Upload_Interval;
+            this.txt_game.Text = ServerGameName;
         }
 
         private void btn_save_Click(object sender, RoutedEventArgs e)
         {
-            ConfigHelper.SetConfig("Upload_Interval", "20");
-            ConfigHelper.GetConfig("Upload_Interval");
-            this.Close();
+            SaveConfig();
+
+            MessageBox.Show("保存成功！");
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -72,7 +83,19 @@ namespace AFT_System.CustomControl.CustomWin
 
         private void Btn_UploadPolice_Click(object sender, RoutedEventArgs e)
         {
+            SaveConfig();
 
+        }
+
+        private void SaveConfig()
+        {
+            bool Is_AutoUpload = this.cb_auto.IsChecked.Value;
+            string Upload_Interval = this.txt_interval.Text;
+            string ServerGameName = this.txt_game.Text;
+
+            ConfigHelper.SetConfig("Is_AutoUpload", Is_AutoUpload.ToString());
+            ConfigHelper.SetConfig("Upload_Interval", Upload_Interval);
+            ConfigHelper.SetConfig("ServerGameName", ServerGameName);
         }
     }
 }

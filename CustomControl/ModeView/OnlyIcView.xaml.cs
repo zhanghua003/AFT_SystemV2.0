@@ -58,14 +58,14 @@ namespace AFT_System.CustomControl.ModeView
             while (true)
             {
                 try
-                  {
+                {
                     Thread.Sleep(300);
-                     CheckICard();
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.ToSaveLog();
-                    }
+                    CheckICard();
+                }
+                catch (Exception ex)
+                {
+                    ex.ToSaveLog();
+                }
             }
         }
         /// <summary> 读写IC卡 </summary>
@@ -84,78 +84,78 @@ namespace AFT_System.CustomControl.ModeView
                     icInfo.IDCard.ToSaveLog("读取到IC卡:");
                     //判断是否超过时限
                     if (!icInfo.IDCard.IsNullOrEmpty()) Dispatcher.Invoke(() => MyIdNo.Text = icInfo.IDCard);
-                        var flag = true;
-                        Dispatcher.Invoke(() =>
-                        { //黑名单检查
+                    var flag = true;
+                    Dispatcher.Invoke(() =>
+                    { //黑名单检查
                             if (IsCheckBlack && FaceFun.IsInBlack(MyIdNo.Text)) LeftImg.Visibility = Visibility.Visible;
-                            if (IsCheckIdNo && MyIdNo.Text.IsNullOrEmpty()) flag = false;
-                        });
-                        if (!flag) { ShowEventMsg("请录入身份证号码.", MsgType.TipErr); return 1; }
-                        //检查白名单验证
-                        if (!CheckWhite(icInfo.IDCard)) return 1;
-                        PhotoOk = null;
-                        lock (Obj)
+                        if (IsCheckIdNo && MyIdNo.Text.IsNullOrEmpty()) flag = false;
+                    });
+                    if (!flag) { ShowEventMsg("请录入身份证号码.", MsgType.TipErr); return 1; }
+                    //检查白名单验证
+                    if (!CheckWhite(icInfo.IDCard)) return 1;
+                    PhotoOk = null;
+                    lock (Obj)
+                    {
+                        if (MyCapture != null)
                         {
-                            if (MyCapture != null)
+                            "拍照获取Photo.".ToSaveLog("");
+                            using (var myMap = MyCapture.QueryFrame())
                             {
-                                "拍照获取Photo.".ToSaveLog("");
-                                using (var myMap = MyCapture.QueryFrame())
+                                if (myMap != null)
                                 {
-                                    if (myMap != null)
-                                    {
-                                        PhotoOk = FaceFun.BitmapToByte(myMap.Bitmap);
-                                    }
-                                    else
-                                    {
-                                        "未取得摄像头Mat数据".ToSaveLog("OnlyQrView.BarCode_OnKeyUp:");
-                                    }
-                                }                                  
+                                    PhotoOk = FaceFun.BitmapToByte(myMap.Bitmap);
+                                }
+                                else
+                                {
+                                    "未取得摄像头Mat数据".ToSaveLog("OnlyQrView.BarCode_OnKeyUp:");
+                                }
                             }
-                          
                         }
-                        //写入本地记录并且通知
-                        var info = new SessionsInfo
+
+                    }
+                    //写入本地记录并且通知
+                    var info = new SessionsInfo
+                    {
+                        SessionId = MyMatch.SessionId,
+                        CreateDate = DateTime.Now,
+                        Name = MyMatch.SessionName,
+                        IdNo = icInfo.IDCard,
+                        IdCardPhoto = null,
+                        TakePhoto = PhotoOk,
+                        FaceData = null,
+                        IdAddress = "",
+                        TicketType = 1,
+                        TicketNo = icInfo.CardNo,
+                        Area = icInfo.StadiumArea,
+                        Row = icInfo.Row,
+                        Seat = icInfo.Position,
+                        TelNo = IrAdvanced.ReadString("TelNo"),
+                        TelArea = IrAdvanced.ReadString("TelArea"),
+                        BuyName = icInfo.Name,
+                        BuyPhoto = null,
+                        BuyDate = null,
+                        ValidateType = 4,
+                        SyncTime = null,
+                        Status = 0,
+                        Remark = "",
+                        UserName = AftUserName,
+                    };
+                    if (FaceFun.AddSessions(info) > 0)
+                    {
+                        Dispatcher.Invoke(() =>
                         {
-                            SessionId = MyMatch.SessionId,
-                            CreateDate = DateTime.Now,
-                            Name = MyMatch.SessionName,
-                            IdNo = icInfo.IDCard,
-                            IdCardPhoto = null,
-                            TakePhoto = PhotoOk,
-                            FaceData = null,
-                            IdAddress = "",
-                            TicketType = 1,
-                            TicketNo = icInfo.CardNo,
-                            Area = icInfo.StadiumArea,
-                            Row = icInfo.Row,
-                            Seat = icInfo.Position,
-                            TelNo = IrAdvanced.ReadString("TelNo"),
-                            TelArea = IrAdvanced.ReadString("TelArea"),
-                            BuyName = icInfo.Name,
-                            BuyPhoto = null,
-                            BuyDate = null,
-                            ValidateType = 4,
-                            SyncTime = null,
-                            Status = 0,
-                            Remark = "",
-                            UserName = AftUserName,
-                        };
-                        if (FaceFun.AddSessions(info) > 0)
-                        {
-                            Dispatcher.Invoke(() =>
-                            {
-                                MyArea.Text = string.Format("区域:{0}区{1}排{2}座", info.Area, info.Row, info.Seat);
-                                MyNum.Text = "票号:" + info.TicketNo;
-                                MyType.Text = "类型:年票";
-                                MyTime.Text = "时间:" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                            });
-                            ShowEventMsg("检票成功", MsgType.FaceOk);
-                            Thread.Sleep(500);
-                        }
+                            MyArea.Text = string.Format("区域:{0}区{1}排{2}座", info.Area, info.Row, info.Seat);
+                            MyNum.Text = "票号:" + info.TicketNo;
+                            MyType.Text = "类型:年票";
+                            MyTime.Text = "时间:" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                        });
+                        ShowEventMsg("检票成功", MsgType.FaceOk);
+                        Thread.Sleep(500);
+                    }
 
                     FaceFun.TimeStop("IC读写耗时:");
                 }
-                else if(i==16)
+                else if (i == 16)
                 {
                     i.ToString().ToSaveLog("已刷卡:");
                     var str = (tempTime == null) ? "拒绝入场" : string.Format("{0}入场", tempTime);
@@ -182,9 +182,9 @@ namespace AFT_System.CustomControl.ModeView
             icPass = false;
             return 0;
 
-        }  
+        }
         #endregion
-  
+
 
         #region UI界面响应
         protected override void ShowEventMsg(string strMsg, MsgType type)
@@ -242,8 +242,10 @@ namespace AFT_System.CustomControl.ModeView
         protected override void TestHardConn()
         {
             base.TestHardConn();
-            //测试IC卡模块
-            OnHardConn(string.Format("条码枪连接\t{0}\n", IdCardFunc.TestDevice(IdCardFunc.Port)==0 ? "\t\t成功 √" : "失败 ×"));
+            #region 2019年3月屏蔽检查模块
+            ////测试IC卡模块
+            //OnHardConn(string.Format("条码枪连接\t{0}\n", IdCardFunc.TestDevice(IdCardFunc.Port)==0 ? "\t\t成功 √" : "失败 ×"));
+            #endregion
             OnHardCompleted();
         }
         #endregion

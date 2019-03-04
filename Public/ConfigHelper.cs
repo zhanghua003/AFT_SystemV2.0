@@ -90,9 +90,9 @@ namespace AFT_System.Public
                         conf.AppSettings.Settings.Add(key, dict[key]);
                     else
                         conf.AppSettings.Settings[key].Value = dict[key];
-                    ConfigurationManager.RefreshSection("appSettings");
                 }
                 conf.Save();
+                ConfigurationManager.RefreshSection("appSettings");
                 return true;
             }
             catch { return false; }

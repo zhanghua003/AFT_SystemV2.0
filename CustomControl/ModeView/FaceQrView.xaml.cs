@@ -74,7 +74,7 @@ namespace AFT_System.CustomControl.ModeView
                             MyType.Text = "类型:散票";
                             MyTime.Text = "时间:" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                         });
-                       
+
                         //取得人脸识别特征码
                         Mat myMap = MyCapture.QueryFrame();
                         if (myMap != null)
@@ -96,7 +96,7 @@ namespace AFT_System.CustomControl.ModeView
             {
                 ex.ToSaveLog("BarCode_OnKeyUp:");
             }
-        }    
+        }
         #endregion
 
         #region 人脸识别处理
@@ -165,7 +165,7 @@ namespace AFT_System.CustomControl.ModeView
                 ex.ToSaveLog();
                 CvrPass = false;
             }
-        }        
+        }
         #endregion
 
         #region 写入数据库
@@ -193,7 +193,7 @@ namespace AFT_System.CustomControl.ModeView
                 BuyName = Cvr.Info.Name,
                 BuyPhoto = null,
                 BuyDate = null,
-                ValidateType =3,
+                ValidateType = 3,
                 SyncTime = null,
                 Status = 0,
                 Remark = "",
@@ -209,9 +209,9 @@ namespace AFT_System.CustomControl.ModeView
                 "写入数据库失败".ToSaveLog("入场记录时：");
                 ShowEventMsg("检票失败", MsgType.FaceErr);
             }
-        }   
+        }
         #endregion
- 
+
         #region UI界面响应
         /// <summary> 入场校验是否允许 </summary>
         protected override bool CheckSession(string idNo, bool isIdNo = true)
@@ -295,8 +295,10 @@ namespace AFT_System.CustomControl.ModeView
         protected override void TestHardConn()
         {
             base.TestHardConn();
+            #region 2019年3月屏蔽检查模块
             //测试条码枪模块
-            OnHardConn(string.Format("条码枪连接\t{0}\n", TestQr() ? "\t\t成功 √" : "失败 ×"));
+            //OnHardConn(string.Format("条码枪连接\t{0}\n", TestQr() ? "\t\t成功 √" : "失败 ×"));
+            #endregion
             OnHardCompleted();
         }
         #endregion

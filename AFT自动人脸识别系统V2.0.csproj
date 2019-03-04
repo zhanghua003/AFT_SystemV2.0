@@ -88,6 +88,9 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="cdutcm.Common">
+      <HintPath>dll\cdutcm.Common.dll</HintPath>
+    </Reference>
     <Reference Include="Emgu.CV.UI">
       <HintPath>dll\Emgu.CV.UI.dll</HintPath>
     </Reference>
@@ -191,6 +194,11 @@
     <Compile Include="CustomControl\Control\VideoControls.xaml.cs">
       <DependentUpon>VideoControls.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Data\CenterDataFactory.cs" />
+    <Compile Include="Data\PoliceDataFactory.cs" />
+    <Compile Include="Data\PoliceModel\Entrance.cs" />
+    <Compile Include="Data\PoliceModel\InspectTicket.cs" />
+    <Compile Include="Data\PoliceModel\Ticket.cs" />
     <Compile Include="Face\FaceData.cs" />
     <Compile Include="Face\FaceFun.cs" />
     <Compile Include="Face\FaceverifyDLL.cs" />

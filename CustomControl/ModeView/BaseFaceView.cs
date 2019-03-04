@@ -249,8 +249,10 @@ namespace AFT_System.CustomControl.ModeView
         protected override void TestHardConn()
         {
             base.TestHardConn();
+            #region 2019年3月屏蔽检查模块
             //测试身份证模块
-            OnHardConn(string.Format("身份证连接\t{0}\n", TestCvr()? "\t\t成功 √" : "失败 ×"));
+            //OnHardConn(string.Format("身份证连接\t{0}\n", TestCvr()? "\t\t成功 √" : "失败 ×"));
+            #endregion
         }
 
         private bool TestCvr()

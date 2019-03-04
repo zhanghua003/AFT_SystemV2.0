@@ -293,8 +293,10 @@ namespace AFT_System.CustomControl.ModeView
         protected override void TestHardConn()
         {
             base.TestHardConn();
+            #region 2019年3月屏蔽检查模块
             //测试IC卡模块
-            OnHardConn(string.Format("条码枪连接\t{0}\n", IdCardFunc.TestDevice(IdCardFunc.Port) == 0 ? "\t\t成功 √" : "失败 ×"));
+            //OnHardConn(string.Format("条码枪连接\t{0}\n", IdCardFunc.TestDevice(IdCardFunc.Port) == 0 ? "\t\t成功 √" : "失败 ×"));
+            #endregion
             OnHardCompleted();
         }
         #endregion

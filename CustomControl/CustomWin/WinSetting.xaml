@@ -57,7 +57,7 @@
             <ComboBox Grid.Row="5" x:Name="cmb_gagame" Height="30" Width="280" HorizontalAlignment="Left" VerticalAlignment="Top" />
         </StackPanel>
 
-        <Button Grid.Row="5" Visibility="Hidden" x:Name="btn_UploadPolice" Width="120" FontSize="15" Height="30" Content="手动上传"  Click="Btn_UploadPolice_Click" VerticalAlignment="Top" Margin="0,180,0,0"/>
+        <Button Grid.Row="5" Visibility="Hidden" x:Name="btn_UploadPolice" Width="120" FontSize="15" Height="30" Content="保存上传"  Click="Btn_UploadPolice_Click" VerticalAlignment="Top" Margin="0,180,0,0"/>
         <Button Grid.Row="5" x:Name="btn_save"  Width="120" FontSize="15" Height="30" Content="保存设置"  Click="btn_save_Click" VerticalAlignment="Top" Margin="0,180,0,0"/>
 
     </Grid>

@@ -27,7 +27,7 @@ using Timer = System.Timers.Timer;
 
 namespace AFT_System.CustomControl.ModeView
 {
-    public class BaseView:Grid,IDisposable
+    public class BaseView : Grid, IDisposable
     {
         /// <summary> 是否启用白名单校验 </summary>
         public bool UseWriteList = false;
@@ -59,14 +59,14 @@ namespace AFT_System.CustomControl.ModeView
         public virtual MatchInfo MyMatch { get; set; }
         /// <summary> 摄像头对象 </summary>
         protected Capture MyCapture;   //摄像头
-        protected readonly  object Obj=new object();
+        protected readonly object Obj = new object();
         /// <summary> 机台登陆者 </summary>
         public string AftUserName { get; set; }
         /// <summary> 摄像机视频流 </summary>
         protected Mat MyMat;
         /// <summary> 摄像头取得的人脸识别特征码 </summary>
         protected RrFeatureT CameraRft;    //摄像头特征码
-        private readonly Timer _time=new Timer(){AutoReset = false};
+        private readonly Timer _time = new Timer() { AutoReset = false };
 
         #region 硬件连接事件
         /// <summary> 硬件准备连接 </summary>
@@ -89,9 +89,9 @@ namespace AFT_System.CustomControl.ModeView
 
         public BaseView()
         {
-            Width = 1280;Height = 800;
+            Width = 1280; Height = 800;
             IdCardFunc.Port = IrAdvanced.ReadString("Port", "", "", "Communication1").ToLower();
-            IdCardFunc.BeepPort = IrAdvanced.ReadString("BeepPort", "", "", "Communication1").ToLower();  
+            IdCardFunc.BeepPort = IrAdvanced.ReadString("BeepPort", "", "", "Communication1").ToLower();
             UseWriteList = IrAdvanced.ReadBoolean("Whitelist"); //是否启用白名单验证
             UseInSession = IrAdvanced.ReadBoolean("InSession"); //是否启用入场验证避免重复入场
             IsIdSame = IrAdvanced.ReadBoolean("IsIdSame");      //散票的身份证号码是否验证必须与所识别身份证号码一致
@@ -100,7 +100,7 @@ namespace AFT_System.CustomControl.ModeView
             IsAudio = IrAdvanced.ReadBoolean("IsAudio");
             CamSleep = IrAdvanced.ReadInt("CamSleep", 100);      //摄像头刷新速率
             FaceTimeOut = IrAdvanced.ReadInt("FaceTimeOut", 3000);  //人脸识别超时时间
-            FaceOutCount = FaceTimeOut/CamSleep;
+            FaceOutCount = FaceTimeOut / CamSleep;
         }
 
         #region 初始化硬件
@@ -111,31 +111,31 @@ namespace AFT_System.CustomControl.ModeView
             "初始化摄像头硬件连接。".ToSaveLog("OpenCamera:");
             var cameraThread = new Thread(OpenCamera) { IsBackground = true };
             cameraThread.Start();
-          //  OpenCamera();
+            //  OpenCamera();
         }
         #region 摄像头视频流捕捉
         /// <summary> 打开摄像头，0为第一个找到的摄像头 </summary>
         protected virtual void OpenCamera()
         {
-                try
-                {
+            try
+            {
 
-                    CvInvoke.UseOpenCL = false; //不使用OpneCL  
-                    MyCapture = new Capture(0); //初始化摄像头
-                    // MyCapture.SetCaptureProperty(CapProp.Fps, 20);
-                    MyCapture.SetCaptureProperty(CapProp.FrameWidth, 352);
-                    MyCapture.SetCaptureProperty(CapProp.FrameHeight, 288);
-                    MyCapture.ImageGrabbed += Capture_ImageGrabbed;   //获取帧     
-                    MyCapture.Start(); //开启摄像头 
+                CvInvoke.UseOpenCL = false; //不使用OpneCL  
+                MyCapture = new Capture(0); //初始化摄像头
+                                            // MyCapture.SetCaptureProperty(CapProp.Fps, 20);
+                MyCapture.SetCaptureProperty(CapProp.FrameWidth, 352);
+                MyCapture.SetCaptureProperty(CapProp.FrameHeight, 288);
+                MyCapture.ImageGrabbed += Capture_ImageGrabbed;   //获取帧     
+                MyCapture.Start(); //开启摄像头 
 
-                }
-                catch (Exception ex)
-                {
-                    ex.ToSaveLog("OpenCamera:");
-                    ShowEventMsg("摄像头硬件初始化失败", MsgType.TipErr);
-                    MyCapture.Dispose();
-                    MyCapture = null;
-                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToSaveLog("OpenCamera:");
+                ShowEventMsg("摄像头硬件初始化失败", MsgType.TipErr);
+                MyCapture.Dispose();
+                MyCapture = null;
+            }
         }
 
         protected virtual void Capture_ImageGrabbed(object sender, EventArgs e)
@@ -148,9 +148,9 @@ namespace AFT_System.CustomControl.ModeView
         #region 入场校验与白名单校验
         public bool CheckRule(string idNo)
         {
-           var white= CheckWhite(idNo);
-           var session= CheckSession(idNo);
-           return white&&session;
+            var white = CheckWhite(idNo);
+            var session = CheckSession(idNo);
+            return white && session;
         }
         /// <summary> 白名单校验是否通过，true通过，false未通过 </summary>
         /// <param name="idNo">身份证</param>
@@ -163,7 +163,7 @@ namespace AFT_System.CustomControl.ModeView
                 if (!FaceFun.IsInWhiteList(idNo))
                 {
                     ClearValue();
-                    ShowEventMsg("错误:白名单验证失败！" + idNo, MsgType.Info); return false;  
+                    ShowEventMsg("错误:白名单验证失败！" + idNo, MsgType.Info); return false;
                 }
             }
             return true;
@@ -173,7 +173,7 @@ namespace AFT_System.CustomControl.ModeView
         /// <param name="idNo">身份证</param>
         /// <param name="isIdNo">是是身份证号,否是票号</param>
         /// <returns>是否通过</returns>
-        protected virtual bool CheckSession(string idNo,bool isIdNo=true)
+        protected virtual bool CheckSession(string idNo, bool isIdNo = true)
         {
             //检查是否已经入场
             if (UseInSession)
@@ -186,7 +186,7 @@ namespace AFT_System.CustomControl.ModeView
                 }
             }
             return true;
-        }        
+        }
         #endregion
 
         #region 界面字符显示
@@ -200,12 +200,12 @@ namespace AFT_System.CustomControl.ModeView
         {
             switch (type)
             {
-                    case MsgType.FaceOk:
+                case MsgType.FaceOk:
                     ClearValue();
                     if (IsAudio) Dispatcher.InvokeAsync(() => FaceFun.PlayMp3("sound\\检票成功.mp3"));
                     IdCardFunc.Beep();
                     break;
-                    case MsgType.FaceErr:
+                case MsgType.FaceErr:
                     HideShow(2);
                     ClearValue();
                     if (IsAudio) Dispatcher.InvokeAsync(() => FaceFun.PlayMp3("sound\\检票失败.mp3"));
@@ -216,14 +216,14 @@ namespace AFT_System.CustomControl.ModeView
         protected virtual void HideShow(double tt)
         {
             _time.Stop();
-            _time.Interval = tt*1000;
+            _time.Interval = tt * 1000;
             _time.Elapsed += Time_Elapsed;
             _time.Start();
         }
 
         protected virtual void Time_Elapsed(object sender, ElapsedEventArgs e)
         {
-           
+
         }
         /// <summary> 写入本地记录并通知检票成功 </summary>
         protected virtual void InSession()
@@ -242,10 +242,13 @@ namespace AFT_System.CustomControl.ModeView
 
         protected virtual void TestHardConn()
         {
-            //测试闸机连接
-            OnHardConn(string.Format("闸  机连接\t{0}\n", IdCardFunc.TestDevice(IdCardFunc.BeepPort) == 0 ? "\t\t成功 √" : "失败 ×"));
-            //测试摄像头
-            OnHardConn(string.Format("摄像头连接\t{0}\n", TestCapture() ? "\t\t成功 √" : "失败 ×"));
+            #region 2019年3月屏蔽检查模块
+            ////测试闸机连接
+            //OnHardConn(string.Format("闸  机连接\t{0}\n", IdCardFunc.TestDevice(IdCardFunc.BeepPort) == 0 ? "\t\t成功 √" : "失败 ×"));
+            ////测试摄像头
+            //OnHardConn(string.Format("摄像头连接\t{0}\n", TestCapture() ? "\t\t成功 √" : "失败 ×"));
+            #endregion
+
             //测试本地数据库
             OnHardConn(string.Format("数据库连接\t{0}\n", FaceFun.TestMatch() > 0 ? "\t\t成功 √" : "失败 ×"));
         }
@@ -306,7 +309,7 @@ namespace AFT_System.CustomControl.ModeView
                 MyCapture.Dispose();
                 MyCapture = null;
             }
-        }        
+        }
         #endregion
 
     }

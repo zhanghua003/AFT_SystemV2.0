@@ -254,8 +254,10 @@ namespace AFT_System.CustomControl.ModeView
         protected override void TestHardConn()
         {
             base.TestHardConn();
-            //测试条码枪模块
-            OnHardConn(string.Format("条码枪连接\t{0}\n", TestQr() ? "\t\t成功 √" : "失败 ×"));
+            #region 2019年3月屏蔽检查模块
+            ////测试条码枪模块
+            //OnHardConn(string.Format("条码枪连接\t{0}\n", TestQr() ? "\t\t成功 √" : "失败 ×"));
+            #endregion
             OnHardCompleted();
         }
         #endregion
