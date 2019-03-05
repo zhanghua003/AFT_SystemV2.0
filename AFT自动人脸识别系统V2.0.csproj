@@ -198,6 +198,7 @@
     <Compile Include="Data\PoliceDataFactory.cs" />
     <Compile Include="Data\PoliceModel\Entrance.cs" />
     <Compile Include="Data\PoliceModel\InspectTicket.cs" />
+    <Compile Include="Data\PoliceModel\SessionModel.cs" />
     <Compile Include="Data\PoliceModel\Ticket.cs" />
     <Compile Include="Face\FaceData.cs" />
     <Compile Include="Face\FaceFun.cs" />

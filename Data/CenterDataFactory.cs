@@ -77,22 +77,93 @@ namespace AFT_System.Data
             }
         }
 
-
         /// <summary>
         /// 同步白名单
         /// </summary>
-        public static void WhiteName(string session_name)
+        public static void WhiteName(int session_id, string session_name)
         {
-            //white_names
+            LogManager.WriteLog("开始同步白名单数据");
+            try
+            {
+                string searchSql = @"SELECT oi.CertificatePic,ProductName, CertificateName, oi.CertificateNo,CellPhone,AreaName,RowNum,SeatNum,TicketId ,o.Address
+                        FROM himall_orderitems oi 
+                        INNER JOIN himall_orders o on o.Id = oi.OrderId
+                        LEFT JOIN himall_orderseats os ON os.OrderId = o.Id
+                        WHERE oi.ProductName = '" + session_name + "' AND o.OrderStatus = 2";
+                DataTable dt = MySqlDBHelper.ExecuteDataTable(ticketCon, searchSql);
+
+                List<string> SQLStringList = new List<string>();
+                List<MySqlParameter[]> mySqlParameters = new List<MySqlParameter[]>();
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    DataRow row = dt.Rows[i];
+                    string certificateName = row["CertificateName"].ToString();
+                    string certificateNo = row["CertificateNo"].ToString();
+                    string certificatePic = row["CertificatePic"].ToString();
+
+                    if (!string.IsNullOrEmpty(certificateName))
+                    {
+                        string[] certificateNames = certificateName.Split(',');
+                        string[] certificateNos = certificateNo.Split(',');
+
+                        for (int j = 0; j < certificateNames.Length; j++)
+                        {
+                            string insertSql = @"insert INTO white_names(`session_id`,`create_date`,`buy_name`,`id_no`,`address`,`ticket_type`,
+                            `ticket_no`,`area`,`row`,`seat`,`status`,`rrfeaturet`,`pic_url` ) VALUE 
+                            (@session_id,@create_date,@buy_name,@id_no,@address,@ticket_type,
+                            @ticket_no,@area,@row,@seat,@status,@rrfeaturet,@pic_url)";
+
+                            MySqlParameter[] sqlParameters = new MySqlParameter[13];
+
+                            sqlParameters[0] = new MySqlParameter("session_id", session_id);
+                            sqlParameters[1] = new MySqlParameter("create_date", DateTime.Now);
+                            sqlParameters[2] = new MySqlParameter("buy_name", certificateNames[j]);
+                            sqlParameters[3] = new MySqlParameter("id_no", certificateNos[j]);
+                            sqlParameters[4] = new MySqlParameter("address", string.IsNullOrEmpty(row["Address"].ToString()) ? "" : row["Address"].ToString());
+                            sqlParameters[5] = new MySqlParameter("ticket_type", 0);
+                            sqlParameters[6] = new MySqlParameter("ticket_no", string.IsNullOrEmpty(row["TicketId"].ToString()) ? "" : row["TicketId"].ToString());
+                            sqlParameters[7] = new MySqlParameter("area", string.IsNullOrEmpty(row["AreaName"].ToString()) ? "" : row["AreaName"].ToString());
+                            sqlParameters[8] = new MySqlParameter("row", string.IsNullOrEmpty(row["RowNum"].ToString()) ? "" : row["RowNum"].ToString());
+                            sqlParameters[9] = new MySqlParameter("seat", string.IsNullOrEmpty(row["SeatNum"].ToString()) ? "" : row["SeatNum"].ToString());
+                            sqlParameters[10] = new MySqlParameter("status", 1);
+                            sqlParameters[11] = new MySqlParameter("rrfeaturet", "");
+                            sqlParameters[12] = new MySqlParameter("pic_url", string.IsNullOrEmpty(certificatePic) ? "" : certificatePic.Split(',')[j]);
+
+                            mySqlParameters.Add(sqlParameters);
+
+                            SQLStringList.Add(insertSql);
+                        }
+
+                    }
+                }
+
+                string deleteSql = "DELETE FROM white_names WHERE session_id = " + session_id;
+                MySqlDBHelper.ExecuteNonQuery(entranceCon, CommandType.Text, deleteSql);
+
+                bool succes = MySqlDBHelper.ExecuteTransaction(entranceCon, CommandType.Text, SQLStringList.ToArray(), mySqlParameters.ToArray());
+                if (succes)
+                    LogManager.WriteLog("同步白名单数据成功：" + SQLStringList.Count + "条数据");
+                else
+                {
+                    LogManager.WriteLog("同步白名单数据失败");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogManager.WriteLog("同步白名单数据异常：" + ex.Message);
+            }
         }
 
         /// <summary>
         /// 同步比赛
         /// </summary>
-        public static int KeyTable()
+        public static PoliceModel.SessionModel KeyTable()
         {
             LogManager.WriteLog("开始同步比赛数据");
             int session_id = 0;
+            PoliceModel.SessionModel session = new PoliceModel.SessionModel();
             try
             {
                 string searchSql = @"select * FROM sessions WHERE `status` = 0 ";
@@ -103,6 +174,8 @@ namespace AFT_System.Data
                 {
                     DataRow sessiondataRow = sessiondt.Rows[0];
                     session_id = Convert.ToInt32(sessiondataRow["session_id"]);
+                    session.Id = session_id;
+                    session.Name = sessiondataRow["session_name"].ToString();
 
                     LogManager.WriteLog("比赛场次：" + sessiondataRow["session_name"].ToString());
 
@@ -157,7 +230,8 @@ namespace AFT_System.Data
             {
                 LogManager.WriteLog("同步比赛数据异常：" + ex.Message);
             }
-            return session_id;
+            return session;
         }
+
     }
 }
