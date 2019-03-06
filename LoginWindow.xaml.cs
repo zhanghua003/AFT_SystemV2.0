@@ -60,6 +60,13 @@ namespace AFT_System
                 {
                     WelcomeText.Text = "程序加载中...\n设备号：" + IrAdvanced.StrDeviceId;
                     TurnToMainWindows();
+
+
+                    SubBaseForm sb = new SubBaseForm("正在同步比赛数据,请稍候...");
+                    SubBaseForm.DelegateNonParmAndNonReturn my = new SubBaseForm.DelegateNonParmAndNonReturn(synchronizeData);
+                    sb.NonParmAndNonReturnMethod(my);
+
+
                 }
                 else
                 {
@@ -132,6 +139,15 @@ namespace AFT_System
                     }
                 }
             }
+        }
+        #endregion
+
+        #region 同步比赛数据
+        private void synchronizeData()
+        {
+            Data.PoliceModel.SessionModel session = Data.CenterDataFactory.KeyTable();
+            Data.CenterDataFactory.BlackName(session.Id);
+            Data.CenterDataFactory.WhiteName(session.Id, session.Name);
         }
         #endregion
     }

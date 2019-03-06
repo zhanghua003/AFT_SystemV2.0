@@ -33,7 +33,7 @@ namespace AFT_System.CustomControl.ModeView
         private string _barIdNo;
         public string BarIdNo
         {
-            get{ return _barIdNo;}
+            get { return _barIdNo; }
             set
             {
                 _barIdNo = value;
@@ -54,7 +54,9 @@ namespace AFT_System.CustomControl.ModeView
         {
             try
             {
-                base.Init();
+                #region 2019年3月屏蔽检查模块
+                //base.Init();
+                #endregion
                 Title.Text = MyMatch.SessionName;
                 "散票验证模式".ToSaveLog("【调用模式】:");
                 _irSeialPort = new IrSerialPort(IrAdvanced.ReadString("BarCodePort"));
@@ -63,7 +65,7 @@ namespace AFT_System.CustomControl.ModeView
             }
             catch (Exception ex)
             {
-              ex.ToSaveLog("OnlyQrView.init:");
+                ex.ToSaveLog("OnlyQrView.init:");
             }
 
         }
@@ -82,8 +84,8 @@ namespace AFT_System.CustomControl.ModeView
                     if (!_qrInfo.Value.IdNo.IsNullOrEmpty()) BarIdNo = _qrInfo.Value.IdNo;
                     //黑名单检查
                     if (IsCheckBlack && FaceFun.IsInBlack(BarIdNo)) LeftImg.Visibility = Visibility.Visible;
-                        //校验身份证是否为空
-                    if (IsCheckIdNo && BarIdNo.IsNullOrEmpty()) {  ShowEventMsg("请录入身份证号码.", MsgType.TipErr); return; }
+                    //校验身份证是否为空
+                    if (IsCheckIdNo && BarIdNo.IsNullOrEmpty()) { ShowEventMsg("请录入身份证号码.", MsgType.TipErr); return; }
                     //白名单校验
                     var white = CheckWhite(_qrInfo.Value.IdNo);
                     //入场校验
@@ -101,9 +103,9 @@ namespace AFT_System.CustomControl.ModeView
                             else
                             {
                                 "未取得摄像头Mat数据".ToSaveLog("OnlyQrView.BarCode_OnKeyUp:");
-                            } 
+                            }
                         }
-  
+
                         InSession();
                     }
                 }
@@ -120,7 +122,7 @@ namespace AFT_System.CustomControl.ModeView
         /// <summary> 入场校验是否允许 </summary>
         protected override bool CheckSession(string idNo, bool isIdNo = true)
         {
-            var pass = base.CheckSession(idNo,isIdNo);
+            var pass = base.CheckSession(idNo, isIdNo);
             if (!pass)
             {
                 ShowEventMsg(string.Format("该客户已经入场！"), MsgType.FaceErr);
@@ -131,7 +133,7 @@ namespace AFT_System.CustomControl.ModeView
                         MyArea.Text = string.Format("区域:{0}{1}排{2}座", _qrInfo.Value.Area, _qrInfo.Value.Row, _qrInfo.Value.Seat);
                         MyNum.Text = "票号:" + _qrInfo.Value.TicketNo;
                         MyType.Text = "类型:散票";
-                        MyTime.Text = "时间:" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");                        
+                        MyTime.Text = "时间:" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                     }
                 });
             }
@@ -187,7 +189,7 @@ namespace AFT_System.CustomControl.ModeView
                     }
                     else
                     {
-                        ShowEventMsg("检票失败,数据库连接失败",MsgType.TipErr);
+                        ShowEventMsg("检票失败,数据库连接失败", MsgType.TipErr);
                     }
                 }
             }
@@ -196,7 +198,7 @@ namespace AFT_System.CustomControl.ModeView
                 ex.ToSaveLog("InSession");
             }
 
-           
+
         }
         #endregion
 
@@ -205,27 +207,27 @@ namespace AFT_System.CustomControl.ModeView
         {
             Dispatcher.Invoke(() =>
             {
-                base.ShowEventMsg(strMsg,type);
+                base.ShowEventMsg(strMsg, type);
                 switch (type)
                 {
-                       case MsgType.TipErr:
-                          Tip.Text = strMsg;
-                          Tip.Foreground = Brushes.Red;
-                        break;
-                       case MsgType.Info:
-                          Tip.Text = strMsg;
-                          Tip.Foreground = Brushes.GreenYellow;
-                        break;
-                       case MsgType.FaceOk:
-                         Tip.Text = strMsg;
-                         Tip.Foreground = Brushes.White;
-                         HideShow(2);
-                        break;
-                       case MsgType.FaceErr:
+                    case MsgType.TipErr:
                         Tip.Text = strMsg;
                         Tip.Foreground = Brushes.Red;
                         break;
-                }                
+                    case MsgType.Info:
+                        Tip.Text = strMsg;
+                        Tip.Foreground = Brushes.GreenYellow;
+                        break;
+                    case MsgType.FaceOk:
+                        Tip.Text = strMsg;
+                        Tip.Foreground = Brushes.White;
+                        HideShow(2);
+                        break;
+                    case MsgType.FaceErr:
+                        Tip.Text = strMsg;
+                        Tip.Foreground = Brushes.Red;
+                        break;
+                }
             });
 
         }
@@ -266,12 +268,12 @@ namespace AFT_System.CustomControl.ModeView
             if (str == "退格")
             {
                 var x = MyIdNo.Text.Length - 1;
-                if(x<0) return;
+                if (x < 0) return;
                 MyIdNo.Text = MyIdNo.Text.Remove(x);
             }
             else
             {
-               MyIdNo.Text +=str;                
+                MyIdNo.Text += str;
             }
         }
 

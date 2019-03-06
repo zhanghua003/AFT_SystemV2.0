@@ -89,7 +89,7 @@ namespace AFT_System.Data
                         FROM himall_orderitems oi 
                         INNER JOIN himall_orders o on o.Id = oi.OrderId
                         LEFT JOIN himall_orderseats os ON os.OrderId = o.Id
-                        WHERE oi.ProductName = '" + session_name + "' AND o.OrderStatus = 2";
+                        WHERE oi.ProductName = '" + session_name + "' AND (o.OrderStatus = 3 OR o.OrderStatus = 5) ";
                 DataTable dt = MySqlDBHelper.ExecuteDataTable(ticketCon, searchSql);
 
                 List<string> SQLStringList = new List<string>();
