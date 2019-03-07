@@ -26,6 +26,11 @@ namespace AFT_System.Data
 
         static string entranceCon = string.Format("Data Source={0};Database={1};User ID=root;Password=root;SslMode=None;", IrAdvanced.ReadString("ServerIp"), IrAdvanced.ReadString("DbName"));
 
+        /// <summary>
+        /// 购票数据上传
+        /// </summary>
+        /// <param name="datetime"></param>
+        /// <param name="gameName"></param>
         public static void Ticket(string datetime, string gameName)
         {
             LogManager.WriteLog("购买数据开始处理");
@@ -82,6 +87,9 @@ namespace AFT_System.Data
             }
         }
 
+        /// <summary>
+        /// 检票数据上传
+        /// </summary>
         public static void Entrance()
         {
             LogManager.WriteLog("检票数据开始上传");
@@ -126,6 +134,9 @@ namespace AFT_System.Data
             }
         }
 
+        /// <summary>
+        /// 告警数据上传
+        /// </summary>
         public static void InspectTicket()
         {
             LogManager.WriteLog("告警数据开始上传");

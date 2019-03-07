@@ -92,20 +92,22 @@ namespace AFT_System.CustomControl.ModeView
                     var session = CheckSession(_qrInfo.Value.TicketNo, false);
                     if (white && session)
                     {
-                        //取得人脸识别特征码
-                        "拍照获取Photo.".ToSaveLog("");
-                        using (var myMap = MyCapture.QueryFrame())
+                        if (MyCapture != null)
                         {
-                            if (myMap != null)
+                            //取得人脸识别特征码
+                            "拍照获取Photo.".ToSaveLog("");
+                            using (var myMap = MyCapture.QueryFrame())
                             {
-                                PhotoOk = FaceFun.BitmapToByte(myMap.Bitmap);
-                            }
-                            else
-                            {
-                                "未取得摄像头Mat数据".ToSaveLog("OnlyQrView.BarCode_OnKeyUp:");
+                                if (myMap != null)
+                                {
+                                    PhotoOk = FaceFun.BitmapToByte(myMap.Bitmap);
+                                }
+                                else
+                                {
+                                    "未取得摄像头Mat数据".ToSaveLog("OnlyQrView.BarCode_OnKeyUp:");
+                                }
                             }
                         }
-
                         InSession();
                     }
                 }

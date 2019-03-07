@@ -29,8 +29,8 @@
         </Rectangle>
         <TextBlock Grid.Row="2" Text="比赛：" Margin="110,24,0,0" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left" Width="45"/>
         <ComboBox Grid.Row="2" Margin="160,20,0,0" x:Name="cmb_game" Height="30" Width="280" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Button Grid.Row="2" x:Name="btn_UploadCenter" Margin="150,90,0,0" Width="120" FontSize="15" Height="30" Content="上传检票数据" HorizontalAlignment="Left" Click="Btn_UploadCenter_Click" VerticalAlignment="Top"/>
-        <Button Grid.Row="2" x:Name="btn_Synchronization" Margin="0,90,150,0" Width="120" FontSize="15" Height="30" Content="同步购票数据" HorizontalAlignment="Right" Click="Btn_Synchronization_Click" VerticalAlignment="Top"/>
+        <!--<Button Grid.Row="2" x:Name="btn_UploadCenter" Margin="150,90,0,0" Width="120" FontSize="15" Height="30" Content="上传检票数据" HorizontalAlignment="Left" Click="Btn_UploadCenter_Click" VerticalAlignment="Top"/>-->
+        <Button Grid.Row="2" x:Name="btn_Synchronization" Margin="0,90,0,0" Width="120" FontSize="15" Height="30" Content="同步比赛数据" HorizontalAlignment="Center" Click="Btn_Synchronization_Click" VerticalAlignment="Top"/>
 
         <TextBlock Grid.Row="3" Margin="20,10,20,0" Text="公安数据上传设置" FontSize="20" Foreground="#FF1970E4" FontWeight="Bold" VerticalAlignment="Center" />
         <Rectangle Grid.Row="4" Margin="20,5" Height="2">

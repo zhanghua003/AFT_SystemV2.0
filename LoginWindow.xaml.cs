@@ -20,6 +20,8 @@ using AFT_System.Public;
 using IrLibrary_Jun.Common;
 using IrLibrary_Jun.PublicClass;
 using Newtonsoft.Json.Linq;
+using System.Configuration;
+using cdutcm.Common.Tools;
 
 namespace AFT_System
 {
@@ -43,7 +45,7 @@ namespace AFT_System
             Cursor = IrAdvanced.IsDebug ? Cursors.Arrow : Cursors.None;
             //是否置顶
             //Topmost = !IrAdvanced.IsDebug;
-            if(IrAdvanced.ReadBoolean("UpData"))
+            if (IrAdvanced.ReadBoolean("UpData"))
             {
                 IrAdvanced.RunApp(AppDomain.CurrentDomain.BaseDirectory + "updata.exe");
             }
@@ -55,18 +57,30 @@ namespace AFT_System
         {
             try
             {
-                VerText.Text = string.Format("版本号:{0}",Assembly.GetExecutingAssembly().GetName().Version);
+                VerText.Text = string.Format("版本号:{0}", Assembly.GetExecutingAssembly().GetName().Version);
                 if (IrAdvanced.CheckRegisterState) //必须注册，否则IrControlLibrary中可能有部分方法无法使用
                 {
                     WelcomeText.Text = "程序加载中...\n设备号：" + IrAdvanced.StrDeviceId;
                     TurnToMainWindows();
 
+                    MessageBoxResult result = MessageBox.Show("是否同步比赛数据", "提示", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        SubBaseForm sb = new SubBaseForm("正在同步比赛数据,请稍候...");
+                        SubBaseForm.DelegateNonParmAndNonReturn my = new SubBaseForm.DelegateNonParmAndNonReturn(synchronizeData);
+                        sb.NonParmAndNonReturnMethod(my);
+                    }
 
-                    SubBaseForm sb = new SubBaseForm("正在同步比赛数据,请稍候...");
-                    SubBaseForm.DelegateNonParmAndNonReturn my = new SubBaseForm.DelegateNonParmAndNonReturn(synchronizeData);
-                    sb.NonParmAndNonReturnMethod(my);
-
-
+                    result = MessageBox.Show("是否开启数据上传至公安服务", "提示", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        bool is_AutoUpload = ConfigurationManager.AppSettings["Is_AutoUpload"].ToBool();
+                        if (is_AutoUpload)
+                        {
+                            Thread thread = new Thread(Upload) { IsBackground = true };
+                            thread.Start();
+                        }
+                    }
                 }
                 else
                 {
@@ -101,7 +115,7 @@ namespace AFT_System
                 }
                 else
                 {
-                    if (IrAdvanced.WinMain != null)  IrAdvanced.WinMain.Show(); 
+                    if (IrAdvanced.WinMain != null) IrAdvanced.WinMain.Show();
                 }
             }
         }
@@ -122,10 +136,11 @@ namespace AFT_System
             {
                 var main = IrAdvanced.WinMain as MainWindow;
                 if (main != null && !main.Isclosed)
-                { Thread.Sleep(1000);
+                {
+                    Thread.Sleep(1000);
                 }
                 else
-                {  break; } 
+                { break; }
             }
             if (IrAdvanced.WinMain != null)
             {
@@ -150,5 +165,20 @@ namespace AFT_System
             Data.CenterDataFactory.WhiteName(session.Id, session.Name);
         }
         #endregion
+
+        private void Upload()
+        {
+            while (true)
+            {
+                int uploadInterval = ConfigurationManager.AppSettings["Upload_Interval"].ToInt();
+                int minute = DateTime.Now.Minute;
+                if (minute % uploadInterval == 0 && DateTime.Now.Second == 0)
+                {
+                    Data.PoliceDataFactory.Entrance();
+                    Data.PoliceDataFactory.InspectTicket();
+                    //Data.PoliceDataFactory.Ticket();
+                }
+            }
+        }
     }
 }
