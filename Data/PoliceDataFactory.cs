@@ -2,6 +2,7 @@
 using cdutcm.Common.DBHelper;
 using cdutcm.Common.Log;
 using IrLibrary_Jun.PublicClass;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -86,17 +87,72 @@ namespace AFT_System.Data
                 LogManager.WriteLog("购买数据上传异常" + ex.Message);
             }
         }
+        public static void Ticket(int sessionId, string gameName)
+        {
+            LogManager.WriteLog("购买数据开始处理");
+            try
+            {
+                string sql = "SELECT * FROM white_names where session_id = '" + sessionId + "' and isupload = 0 ";
+                DataTable dataTable = MySqlDBHelper.ExecuteDataTable(PoliceDataFactory.entranceCon, sql);
+                bool flag = dataTable.Rows.Count > 0;
+                if (flag)
+                {
+                    LogManager.WriteLog("本次上次购买数据数量为" + dataTable.Rows.Count + "条");
+                    Ticket ticket = new Ticket
+                    {
+                        verification = verification,
+                        dataVoList = new List<TicketInfo>()
+                    };
+                    foreach (object obj in dataTable.Rows)
+                    {
+                        DataRow item = (DataRow)obj;
+                        ticket.dataVoList.Add(new TicketInfo
+                        {
+                            activityId = gameName,
+                            purchaserName = item["buy_name"].ToString(),
+                            purchaserIdCardNo = item["id_no"].ToString(),
+                            purchaserTel = item["purchaser_tel"].ToString(),
+                            purchaserSeatNo = string.Concat(new string[]
+                            {
+                        item["area"].ToString(),
+                        item["row"].ToString(),
+                        "排",
+                        item["seat"].ToString(),
+                        "号"
+                            }),
+                            ticketNo = item["ticket_no"].ToString()
+                        });
+                    }
+                    string url = URL + "/api/ticket";
+                    string ticketdata = JsonConvert.SerializeObject(ticket);
+                    LogManager.WriteLog("购买上传数据：" + ticketdata);
+                    string msg = PoliceDataFactory.HttpPost(url, ticketdata, null);
+                    LogManager.WriteLog("购买数据上传完成");
+                    LogManager.WriteLog("购买数据上传返回结果：" + msg);
+                    LogManager.WriteLog("更新上传数据状态");
+                    string updatesql = "update white_names set isupload=1 where session_id = '" + sessionId + "'";
+                    MySqlDBHelper.ExecuteNonQuery(PoliceDataFactory.entranceCon, CommandType.Text, updatesql);
+                }
+                else
+                {
+                    LogManager.WriteLog("无购买数据上传");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.WriteLog("购买数据上传异常" + ex.Message);
+            }
+        }
 
         /// <summary>
         /// 检票数据上传
         /// </summary>
-        public static void Entrance()
+        public static void Entrance(int sessionId, string gameName)
         {
             LogManager.WriteLog("检票数据开始上传");
             try
             {
-                string sql = @"SELECT DISTINCT s.session_id,s.tel_no,s.tel_area,s.ticket_no,s.id_no, s.buy_name,s.create_date from in_sessions s ORDER BY id desc LIMIT 10";
-
+                string sql = "SELECT DISTINCT s.session_id,s.tel_no,s.tel_area,s.ticket_no,s.id_no, s.buy_name,s.create_date from in_sessions s where session_id = '" + sessionId + "' and isupload = 0";
                 DataTable dataTable = MySqlDBHelper.ExecuteDataTable(entranceCon, sql);
 
                 Entrance entrance = new Entrance() { verification = verification, dataVoList = new List<EntranceInfo>() };
@@ -123,10 +179,13 @@ namespace AFT_System.Data
 
                 string ticketdata = Newtonsoft.Json.JsonConvert.SerializeObject(entrance);
 
-                string msg = HttpPost(url, ticketdata);
-
+                LogManager.WriteLog("检票上传数据：" + ticketdata);
+                string msg = PoliceDataFactory.HttpPost(url, ticketdata, null);
                 LogManager.WriteLog("检票数据上传完成");
                 LogManager.WriteLog("检票数据上传返回结果：" + msg);
+                LogManager.WriteLog("更新上传数据状态");
+                string updatesql = "update in_sessions set isupload=1 where session_id = '" + sessionId + "'";
+                MySqlDBHelper.ExecuteNonQuery(PoliceDataFactory.entranceCon, CommandType.Text, updatesql);
             }
             catch (Exception ex)
             {
@@ -137,12 +196,12 @@ namespace AFT_System.Data
         /// <summary>
         /// 告警数据上传
         /// </summary>
-        public static void InspectTicket()
+        public static void InspectTicket(int sessionId, string gameName)
         {
             LogManager.WriteLog("告警数据开始上传");
             try
             {
-                string sql = @"SELECT id,session_id,session_id,buy_name,id_no,id_card_photo,year_ticket_photo,address,status,remark from black_names  ORDER BY id desc";
+                string sql = "SELECT id,session_id,buy_name,id_no,id_card_photo,year_ticket_photo,address,status,remark from black_names where session_id = '" + sessionId + "' and isupload = 0";
 
                 DataTable dataTable = MySqlDBHelper.ExecuteDataTable(entranceCon, sql);
 
@@ -164,12 +223,14 @@ namespace AFT_System.Data
                 }
 
                 string url = URL + "/api/inspectTicket";
-
-                string data = Newtonsoft.Json.JsonConvert.SerializeObject(inspectTicket);
-
-                string msg = HttpPost(url, data);
-                LogManager.WriteLog("检票数据上传完成");
-                LogManager.WriteLog("检票数据上传返回结果：" + msg);
+                string data = JsonConvert.SerializeObject(inspectTicket);
+                LogManager.WriteLog("告警上传数据：" + data);
+                string msg = PoliceDataFactory.HttpPost(url, data, null);
+                LogManager.WriteLog("告警数据上传完成");
+                LogManager.WriteLog("告警数据上传返回结果：" + msg);
+                LogManager.WriteLog("更新上传数据状态");
+                string updatesql = "update black_names set isupload=1 where session_id = '" + sessionId + "'";
+                MySqlDBHelper.ExecuteNonQuery(PoliceDataFactory.entranceCon, CommandType.Text, updatesql);
             }
             catch (Exception ex)
             {
@@ -216,7 +277,7 @@ namespace AFT_System.Data
         }
     }
 
-    public class Rusult
+    public class Result
     {
         public string message { get; set; }
         public string status { get; set; }

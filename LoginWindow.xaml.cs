@@ -22,6 +22,8 @@ using IrLibrary_Jun.PublicClass;
 using Newtonsoft.Json.Linq;
 using System.Configuration;
 using cdutcm.Common.Tools;
+using AFT_System.Data.PoliceModel;
+using AFT_System.Data;
 
 namespace AFT_System
 {
@@ -171,12 +173,15 @@ namespace AFT_System
             while (true)
             {
                 int uploadInterval = ConfigurationManager.AppSettings["Upload_Interval"].ToInt();
+                string gameName = ConfigurationManager.AppSettings["ServerGameName"].ToString();
                 int minute = DateTime.Now.Minute;
-                if (minute % uploadInterval == 0 && DateTime.Now.Second == 0)
+                bool flag = minute % uploadInterval == 0 && DateTime.Now.Second == 0;
+                if (flag)
                 {
-                    Data.PoliceDataFactory.Entrance();
-                    Data.PoliceDataFactory.InspectTicket();
-                    //Data.PoliceDataFactory.Ticket();
+                    SessionModel session = CenterDataFactory.KeyTable();
+                    PoliceDataFactory.Entrance(session.Id, gameName);
+                    PoliceDataFactory.InspectTicket(session.Id, gameName);
+                    PoliceDataFactory.Ticket(session.Id, gameName);
                 }
             }
         }

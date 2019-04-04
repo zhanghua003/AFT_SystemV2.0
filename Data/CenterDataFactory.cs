@@ -77,6 +77,51 @@ namespace AFT_System.Data
             }
         }
 
+        public static void Upload(object sessionId)
+        {
+            string searchSql = "SELECT `session_id`,`create_date`,`name`,`id_no`,`id_card_photo`,`take_photo`,`face_data`,`id_address`,`ticket_type`,`ticket_no`,`area`,`row`,`seat`,`tel_no`,`tel_area`,`buy_name`,`buy_photo`,`buy_date`,`validate_type`,`sync_time`,`status`,`remark` FROM in_sessions WHERE session_id = " + sessionId;
+
+            DataTable dt = MySqlDBHelper.ExecuteDataTable(entranceCon, searchSql);
+
+            string[] SQLStringList = new string[dt.Rows.Count];
+            MySqlParameter[][] mySqlParameters = new MySqlParameter[dt.Rows.Count][];
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                DataRow row = dt.Rows[i];
+
+                string insertSql = @"INSERT INTO in_sessions(`session_id`,`create_date`,`name`,`id_no`,`id_card_photo`,`take_photo`,`face_data`,`id_address`,`ticket_type`,`ticket_no`,`area`,`row`,`seat`,`tel_no`,`tel_area`,`buy_name`,`buy_photo`,`buy_date`,`validate_type`,`sync_time`,`status`,`remark`) VALUES(@session_id,@create_date,@name,@id_no,@id_card_photo,@take_photo,@face_data,@id_address,@ticket_type,@ticket_no,@area,@row,@seat,@tel_no,@tel_area,@buy_name,@buy_photo,@buy_date,@validate_type,@sync_time,@status,@remark)";
+                mySqlParameters[i] = new MySqlParameter[22];
+                mySqlParameters[i][0] = new MySqlParameter("session_id", row["session_id"]);
+                mySqlParameters[i][1] = new MySqlParameter("create_date", row["create_date"]);
+                mySqlParameters[i][2] = new MySqlParameter("name", row["name"]);
+                mySqlParameters[i][3] = new MySqlParameter("id_no", row["id_no"]);
+                mySqlParameters[i][4] = new MySqlParameter("id_card_photo", row["id_card_photo"]);
+                mySqlParameters[i][5] = new MySqlParameter("take_photo", row["take_photo"]);
+                mySqlParameters[i][6] = new MySqlParameter("face_data", row["face_data"]);
+                mySqlParameters[i][7] = new MySqlParameter("id_address", row["id_address"]);
+                mySqlParameters[i][8] = new MySqlParameter("ticket_type", row["ticket_type"]);
+                mySqlParameters[i][9] = new MySqlParameter("ticket_no", row["ticket_no"]);
+                mySqlParameters[i][10] = new MySqlParameter("area", row["area"]);
+                mySqlParameters[i][11] = new MySqlParameter("row", row["row"]);
+                mySqlParameters[i][12] = new MySqlParameter("seat", row["seat"]);
+                mySqlParameters[i][13] = new MySqlParameter("tel_no", row["tel_no"]);
+                mySqlParameters[i][14] = new MySqlParameter("tel_area", row["tel_area"]);
+                mySqlParameters[i][15] = new MySqlParameter("buy_name", row["buy_name"]);
+                mySqlParameters[i][16] = new MySqlParameter("buy_photo", row["buy_photo"]);
+                mySqlParameters[i][17] = new MySqlParameter("buy_date", row["buy_date"]);
+                mySqlParameters[i][18] = new MySqlParameter("validate_type", row["validate_type"]);
+                mySqlParameters[i][19] = new MySqlParameter("sync_time", row["sync_time"]);
+                mySqlParameters[i][20] = new MySqlParameter("status", row["status"]);
+                mySqlParameters[i][21] = new MySqlParameter("remark", row["remark"]);
+
+                SQLStringList[i] = insertSql;
+            }
+            
+            MySqlDBHelper.ExecuteTransaction(centerCon, CommandType.Text, SQLStringList, mySqlParameters);
+            LogManager.WriteLog("上传比赛数据成功：" + dt.Rows.Count + "条数据");
+        }
+
         /// <summary>
         /// 同步白名单
         /// </summary>
@@ -232,6 +277,8 @@ namespace AFT_System.Data
             }
             return session;
         }
+
+
 
     }
 }
